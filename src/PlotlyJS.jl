@@ -25,7 +25,7 @@ export plot, dataset, list_datasets, make_subplots, savefig, mgrid
 
 # globals for this package
 const _pkg_root = dirname(dirname(@__FILE__))
-const _js_path = joinpath(artifact"plotly-artifacts", "plotly.min.js")
+_js_path() = joinpath(artifact"plotly-artifacts", "plotly.min.js")
 const _js_cdn_path = "https://cdn.plot.ly/plotly-latest.min.js"
 const _mathjax_cdn_path =
     "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_SVG"
@@ -97,7 +97,7 @@ function __init__()
 
     @async _start_kaleido_process()
 
-    if !isfile(_js_path)
+    if !isfile(_js_path())
         @info("plotly.js javascript libary not found -- downloading now")
         include(joinpath(_pkg_root, "deps", "build.jl"))
     end
