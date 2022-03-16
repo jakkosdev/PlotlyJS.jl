@@ -1,3 +1,5 @@
+using Memoize, RelocatableFolders
+
 # ----------------------------------------- #
 # SyncPlot -- sync Plot object with display #
 # ----------------------------------------- #
@@ -22,6 +24,9 @@ function Base.show(io::IO, mm::MIME"text/html", p::SyncPlot)
 end
 Base.show(io::IO, mm::MIME"application/prs.juno.plotpane+html", p::SyncPlot) = show(io, mm, p.scope)
 
+folder_dir = @path joinpath(@__DIR__, "..")
+@memoize plotly_webio_bundle_path() = joinpath(folder_dir, "assets", "plotly_webio.bundle.js")
+
 function SyncPlot(
         p::Plot;
         kwargs...
@@ -32,7 +37,7 @@ function SyncPlot(
     # setup scope
     deps = [
         "Plotly" => joinpath(artifact"plotly-artifacts", "plotly.min.js"),
-        joinpath(@__DIR__, "..", "assets", "plotly_webio.bundle.js")
+        plotly_webio_bundle_path()
     ]
     scope = Scope(imports=deps)
     scope.dom = dom"div"(id=string("plot-", p.divid))
