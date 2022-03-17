@@ -28,7 +28,7 @@ folder_dir = @path joinpath(@__DIR__, "..")
 @memoize plotly_webio_bundle_path() = joinpath(folder_dir, "assets", "plotly_webio.bundle.js")
 
 function SyncPlot(
-        p::Plot;
+        p::Plot; windowheight = "100vh",
         kwargs...
     )
     lowered = JSON.lower(p)
@@ -98,7 +98,7 @@ function SyncPlot(
         if (window.Blink !== undefined)
             # set css style for auto-resize
             gd.style.width = "100%";
-            gd.style.height = "100vh";
+            gd.style.height = $windowheight;
             gd.style.marginLeft = "0%";
             gd.style.marginTop = "0vh";
         end
@@ -154,8 +154,8 @@ function SyncPlot(
     SyncPlot(p, scope, nothing)
 end
 
-function plot(args...; kwargs...)
-    SyncPlot(Plot(args...; kwargs...))
+function plot(args...; windowheight = "100vh", kwargs...)
+    SyncPlot(Plot(args...; kwargs...); windowheight)
 end
 
 # Add some basic Julia API methods on SyncPlot that just forward onto the Plot
