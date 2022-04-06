@@ -101,6 +101,8 @@ function SyncPlot(
             gd.style.height = $windowheight;
             gd.style.marginLeft = "0%";
             gd.style.marginTop = "0vh";
+            gd.style.overflowX = "auto";
+            gd.style.overflowY = "hidden";
         end
 
         window.onresize = () -> Plotly.Plots.resize(gd)
